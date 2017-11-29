@@ -2,6 +2,7 @@ let express = require("express");
 let path = require("path");
 let app = express();//返回一个http的监听函数
 
+app.use(express.static(path.resolve("./node_modules")));
 app.get("/",(req,res)=> {
 	res.sendFile(path.resolve("index.html"));
 });

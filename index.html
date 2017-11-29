@@ -3,8 +3,39 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Title</title>
+	<link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+	<!--服务端返回页面,无跨域,要去配置服务端的静态文件根目录-->
 </head>
 <body>
+<div class="container">
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<h3 class="text-center">欢迎来到聊天室</h3>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<li class="list-group-item">
+							张三 今天天气不错
+						</li>
+					</ul>
+				</div>
+				<div class="panel-footer">
+					<form action="">
+						<div class="form-group">
+							<label for="content"></label>
+							<input type="text" class="form-control" id="content">
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary">发言</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="/socket.io/socket.io.js"></script> <!--路径为固定写法,此文件是服务端运行后生成的-->
 <script>
 	let socket = io(); //io对象为引入socket.io.js后获得的,参数不写,或者写/等同于http://localhost:8080,服务器的路径
