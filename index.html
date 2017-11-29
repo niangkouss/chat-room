@@ -43,19 +43,27 @@
 	let socket = io(); //io对象为引入socket.io.js后获得的,参数不写,或者写/等同于http://localhost:8080,服务器的路径
 	socket.on("connect",function () {
 		console.log("连接成功");
+		socket.emit("getAllMessage");
 	});
 	socket.on("disconnect",function () {
 		console.log("断开连接");
 	});
+
 	socket.on("message",function (msgObj) { //监听服务端发送过来的消息
 		let msgUl = document.querySelector(".list-group");
 		let li = document.createElement("li");
-		li.innerHTML = `<span class="user">${msgObj.username}</span>:${msgObj.content}
-			<span class="pull-right">${msgObj.createAt}</span>`;
+		li.innerHTML = formatMsg(msgObj);
 		li.className = "list-group-item";
 		msgUl.appendChild(li);
 	});
-
+	socket.on("allMessage",function (messages) {
+		messages = messages.map((msg)=>{
+			return `<li class="list-group-item">${formatMsg(msg)}</li>`
+		});
+		let html = messages.join(" ");
+		let msgUl = document.querySelector(".list-group");
+		msgUl.innerHTML = html;
+	});
 	function handleSubmit(event) {
 		event.preventDefault();//阻止默认提交行为
 		let contentInput = document.querySelector("#content");
@@ -70,6 +78,10 @@
 			contentInput.value = `@${username} `;
 		}
 	}
+	function formatMsg(msgObj) {//二次用到,提取做函数
+		return `<span class="user">${msgObj.username}</span>:${msgObj.content}
+			<span class="pull-right">${new Date(msgObj.createAt).toLocaleString()}</span>`;
+	}//后台无时区,前台弄
 </script>
 </body>
 </html>

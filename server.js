@@ -35,5 +35,12 @@ io.on("connection",function (socket) { //connection和客户端的connect不一�
 
 
 	});
+
+	socket.on("getAllMessage",function () {
+		Message.find().sort({createAt:-1}).limit(20).exec(function (err,message) {//时间倒序排获取20条
+			message.reverse();//显示的时候是要倒着显示
+			socket.emit("allMessage",message);
+		});
+	});
 });
 server.listen(8080); //app.listen()等同于require("http").createServer(app).listen(8080),因为socket.io用到server就分开写
