@@ -21,8 +21,3 @@
 点击删除对应聊天记录
 ## 技术栈
 socket.io + mongodb/mongoose + bootstrap +express +ES6
-
-## 项目运行
-```
-npm install
-```
