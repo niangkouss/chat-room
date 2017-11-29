@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+<script src="/socket.io/socket.io.js"></script> <!--路径为固定写法,此文件是服务端运行后生成的-->
+<script>
+	let socket = io(); //io对象为引入socket.io.js后获得的,参数不写,或者写/等同于http://localhost:8080,服务器的路径
+	socket.on("connect",function () {
+		console.log("连接成功");
+		socket.send("你好");
+	});
+	socket.on("disconnect",function () {
+		console.log("断开连接");
+	});
+	socket.on("message",function (msg) { //监听服务端发送过来的消息
+		console.log(msg);
+	});
+</script>
+</body>
+</html>
