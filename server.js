@@ -55,5 +55,10 @@ io.on("connection",function (socket) { //connection和客户端的connect不一�
 		socket.join(roomname);
 		currentRoom = roomname;
 	});
+	socket.on("delete",function (id) {
+		Message.remove({_id:id},function (err,result) {
+			io.emit("deleted",id);
+		})
+	});
 });
 server.listen(8080); //app.listen()等同于require("http").createServer(app).listen(8080),因为socket.io用到server就分开写
