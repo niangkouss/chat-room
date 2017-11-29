@@ -13,7 +13,7 @@ let io = require("socket.io")(server);
 io.on("connection",function (socket) { //connection和客户端的connect不一样
 	console.log("客户端已连接");
 	socket.on("message",(msg)=>{
-		socket.send("server:"+msg);
+		io.emit("message",msg);//接收到客户端消息之后广播
 	});
 });
 server.listen(8080); //app.listen()等同于require("http").createServer(app).listen(8080),因为socket.io用到server就分开写
