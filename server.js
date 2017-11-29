@@ -1,6 +1,7 @@
 let express = require("express");
 let path = require("path");
 let app = express();//返回一个http的监听函数
+let Message  = require("./model").Message;//导入的只是exports
 
 app.use(express.static(path.resolve("./node_modules")));
 app.get("/",(req,res)=> {
@@ -23,7 +24,9 @@ io.on("connection",function (socket) { //connection和客户端的connect不一�
 				sockets[toUser].send({username,content,createAt:new Date().toLocaleString()});
 				return
 			}
-			io.emit("message",{username,content:msg,createAt:new Date().toLocaleString()});//接收到客户端消息之后广播
+			Message.create({username,content:msg},function (err,message) {
+				io.emit("message",message); //message有_id username content createAt _version
+			});//createAt用数据库自己的
 			return;
 		}
 		username = msg;
