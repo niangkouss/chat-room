@@ -25,7 +25,12 @@ io.on("connection",function (socket) { //connection和客户端的connect不一�
 				return
 			}
 			Message.create({username,content:msg},function (err,message) {
-				io.emit("message",message); //message有_id username content createAt _version
+				if(currentRoom){//如果此客户端在房间内
+					io.in(currentRoom).emit("message",message);
+				}else{
+					//如果此客户端在大厅
+					io.emit("message",message); //message有_id username content createAt _version
+				}
 			});//createAt用数据库自己的
 			return;
 		}
@@ -41,6 +46,14 @@ io.on("connection",function (socket) { //connection和客户端的connect不一�
 			message.reverse();//显示的时候是要倒着显示
 			socket.emit("allMessage",message);
 		});
+	});
+	let currentRoom;
+	socket.on("join",function (roomname) {
+		if(currentRoom){
+			socket.leave(currentRoom);
+		}
+		socket.join(roomname);
+		currentRoom = roomname;
 	});
 });
 server.listen(8080); //app.listen()等同于require("http").createServer(app).listen(8080),因为socket.io用到server就分开写
